@@ -9,15 +9,9 @@ The External content activity is available here:
 The Course and External content activity should have been uploaded using the
 [moodle-tool_uploadexternalcontent](https://github.com/lushonline/moodle-tool_uploadexternalcontent) as this correctly configures the Course and Activity ID Number.
 
-The import file contains two columns:
-|COLUMN ORDER|COLUMN HEADER|DESCRIPTION|REQUIRED|EXAMPLE|
-|---------------|-------------|---------|----------|----------|
-|1|COURSE_IDNUMBER|This is the Moodle Course ID Number. The ID number of a course is used when matching the results against the imported course and is not displayed anywhere to the user in Moodle. All course when imported using [moodle-tool_uploadexternalcontent](https://github.com/lushonline/moodle-tool_uploadexternalcontent) have an immutable COURSE_IDNUMBER|Yes|1b49aa30-e719-11e6-9835-f723b46a2688|
-|2|USER_USERNAME|This is the Moodle Users username.|Yes|Student|
+The import enrols the student into the course, marks the activity viewed, if the import set EXTERNAL_MARKCOMPLETEEXTERNALLY=true the activity is also marked as Completed and if a score is included a grade is added.
 
-The import enrols the student into the course, and marks the activity viewed plus if the import set EXTERNAL_MARKCOMPLETEEXTERNALLY=true the activity is also marked as Completed.
-
-The date used for the viewed and completed entry is the date of the import not the date of the completion as recorded in the external system.
+The way Moodle handles the means for the grade and completion it is the date of the import you cannotimport the date of the completion as recorded in the external system.
 
 - [Installation](#installation)
 - [Usage](#usage)
