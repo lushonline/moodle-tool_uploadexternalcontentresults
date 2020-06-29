@@ -49,6 +49,8 @@ before_install:
   - export PATH="$(cd ci/bin; pwd):$(cd ci/vendor/bin; pwd):$PATH"
 
 install:
+  - moodle-plugin-ci add-plugin lushonline/moodle-mod_externalcontent
+  - moodle-plugin-ci add-plugin lushonline/moodle-tool_uploadexternalcontent
   - moodle-plugin-ci install
 
 script:
