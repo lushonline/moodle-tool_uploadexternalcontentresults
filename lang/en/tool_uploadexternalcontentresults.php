@@ -24,7 +24,6 @@
 
 $string['pluginname'] = 'Upload external content completions';
 $string['importfile'] = 'CSV file';
-$string['invalidimportfile'] = 'File format is invalid.';
 $string['import'] = 'Import';
 $string['completionsprocessed'] = 'Completions processed successfully';
 
@@ -53,3 +52,15 @@ $string['invalidcsvfile'] = 'File format is invalid.';
 $string['invalidencoding'] = 'Invalid encoding specified';
 
 // Helper.
+$string['coursedoesnotexist'] = 'Course with idnumber {$a} does not exist.';
+$string['externalcontentdoesnotexist'] = 'External content with idnumber {$a} does not exist.';
+$string['userdoesnotexist'] = 'User with username {$a} does not exist.';
+
+// Importer.
+$string['invalidfileexception'] = 'File format is invalid. {$a}';
+$string['invalidimportfile'] = 'File format is invalid.';
+$string['invalidimportfileheaders'] = 'File headers are invalid. Not enough columns, please verify the delimiter setting.';
+$string['invalidimportfilenorecords'] = 'No records in import file.';
+$string['invalidimportrecord'] = 'Invalid Import Record.';
+$string['statuscompletionadded'] = 'External content completion data added/updated.';
+$string['statuscompletionskipped'] = 'External content completion skipped.';

@@ -33,9 +33,9 @@ defined('MOODLE_INTERNAL') || die('Direct access to this script is forbidden.');
 class tool_uploadexternalcontentresults_importer {
 
     /**
-     * @var string $error   Last error message.
+     * @var array $error   Last error message.
      */
-    public $error = '';
+    public $error = array();
 
     /**
      * @var array $records   The records to process.
@@ -81,11 +81,9 @@ class tool_uploadexternalcontentresults_importer {
      * Return a Failure
      *
      * @param string $msg
-     * @return bool Always returns false
      */
     public function fail($msg) {
-        $this->error = $msg;
-        return false;
+        array_push($this->error, $msg);
     }
 
     /**
@@ -159,6 +157,54 @@ class tool_uploadexternalcontentresults_importer {
     }
 
     /**
+     *
+     * Validate as a minimum the CSV contains the same number of columns as we require
+     *
+     * @return bool
+     */
+    private function validateheaders() {
+
+        $foundcount = count($this->list_found_headers());
+        $requiredcount = count($this->list_required_headers());
+
+        if ($foundcount < $requiredcount) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     *
+     * Start a new CSV importer, and return true if successful
+     *
+     * @param string $text
+     * @param string $encoding
+     * @param string $delimiter
+     * @param string $type
+     * @return bool
+     */
+    private function startcsvimporter(
+                                    $text = null,
+                                    $encoding = null,
+                                    $delimiter = 'comma',
+                                    $type = 'csvimport' ) {
+        if ($text === null) {
+            return false;
+        }
+
+        $this->importid = csv_import_reader::get_new_iid($type);
+        $this->importer = new csv_import_reader($this->importid, $type);
+
+        if (!$this->importer->load_csv_content($text, $encoding, $delimiter)) {
+            $this->importer->cleanup();
+            return false;
+        }
+
+        return true;
+    }
+
+
+    /**
      * Constructor
      *
      * @param string $text
@@ -173,23 +219,15 @@ class tool_uploadexternalcontentresults_importer {
         require_once($CFG->libdir . '/csvlib.class.php');
 
         $type = 'singleexternalcontentcoursecompletion';
+        $this->importid = $importid;
 
-        if (!$importid) {
-            if ($text === null) {
-                return;
-            }
-              $this->importid = csv_import_reader::get_new_iid($type);
-
-              $this->importer = new csv_import_reader($this->importid, $type);
-
-            if (!$this->importer->load_csv_content($text, $encoding, $delimiter)) {
+        if (!$this->importid) {
+            if (!$this->startcsvimporter($text, $encoding, $delimiter, $type)) {
                 $this->fail(get_string('invalidimportfile', 'tool_uploadexternalcontentresults'));
-                $this->importer->cleanup();
                 return;
             }
         } else {
-               $this->importid = $importid;
-               $this->importer = new csv_import_reader($this->importid, $type);
+            $this->importer = new csv_import_reader($this->importid, $type);
         }
 
         if (!$this->importer->init()) {
@@ -199,6 +237,11 @@ class tool_uploadexternalcontentresults_importer {
         }
 
         $this->foundheaders = $this->importer->get_columns();
+        if (!$this->validateheaders()) {
+            $this->fail(get_string('invalidimportfileheaders', 'tool_uploadexternalcontentresults'));
+            $this->importer->cleanup();
+            return;
+        }
 
         $record = null;
         $records = array();
@@ -221,9 +264,10 @@ class tool_uploadexternalcontentresults_importer {
         $this->records = $records;
 
         $this->importer->close();
+
         if ($this->records == null) {
-               $this->fail(get_string('invalidimportfile', 'tool_uploadexternalcontentresults'));
-               return;
+            $this->fail(get_string('invalidimportfilenorecords', 'tool_uploadexternalcontentresults'));
+            return;
         }
     }
 
@@ -232,7 +276,17 @@ class tool_uploadexternalcontentresults_importer {
      *
      * @return string the last error
      */
-    public function get_error() {
+    public function haserrors() {
+        return count($this->error) > 0;
+    }
+
+
+    /**
+     * Get the error information array
+     *
+     * @return array the error messages
+     */
+    public function geterrors() {
         return $this->error;
     }
 
@@ -253,19 +307,18 @@ class tool_uploadexternalcontentresults_importer {
         }
         $tracker->start();
 
-        $records = $this->records;
-
-        $total = 0;
-        $added = 0;
-        $skipped = 0;
-        $errors = 0;
+        $total = $added = $skipped = $errors = 0;
 
         // We will most certainly need extra time and memory to process big files.
         core_php_time_limit::raise();
         raise_memory_limit(MEMORY_EXTRA);
 
+        $completionaddedmsg = get_string('statuscompletionadded', 'tool_uploadexternalcontentresults');
+        $completionskippedmsg = get_string('statuscompletionskipped', 'tool_uploadexternalcontentresults');
+        $invalidrecordmsg = get_string('invalidimportrecord', 'tool_uploadexternalcontentresults');
+
         // Now actually do the work.
-        foreach ($records as $record) {
+        foreach ($this->records as $record) {
             $this->linenb++;
             $total++;
 
@@ -275,20 +328,21 @@ class tool_uploadexternalcontentresults_importer {
                 $skipped = $skipped + $response->skipped;
 
                 if ($response->added != 0) {
-                    $status = array("External content completion data added/updated.", $response->message);
+                    $status = array($completionaddedmsg, $response->message);
                 } else {
-                    $status = array("External content completion skipped.", $response->message);
+                    $status = array($completionskippedmsg, $response->message);
                 }
 
                 $tracker->output($this->linenb, true, $status, $response);
             } else {
                 $errors++;
-                $status = array("Invalid Import Record.");
+                $status = array($invalidrecordmsg);
                 $tracker->output($this->linenb, false, $status, null);
             }
         }
 
         $tracker->finish();
         $tracker->results($total, $added, $skipped, $errors);
+        return $tracker->get_buffer();
     }
 }

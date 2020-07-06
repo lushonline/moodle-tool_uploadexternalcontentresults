@@ -50,15 +50,11 @@ class tool_uploadexternalcontentresults_helper {
         // course idnumber.
         // user username.
 
-        if (empty($record->course_idnumber)) {
-            return false;
-        }
+        $isvalid = true;
+        $isvalid = $isvalid && !empty($record->course_idnumber);
+        $isvalid = $isvalid && !empty($record->user_username);
 
-        if (empty($record->user_username)) {
-            return false;
-        }
-
-        return true;
+        return $isvalid;
     }
 
     /**
@@ -137,7 +133,6 @@ class tool_uploadexternalcontentresults_helper {
 
         // Student role to use when enroling user.
         $studentrole = $DB->get_record('role', array('shortname' => 'student'));
-        $message = '';
         // Get the course by the idnumber.
         if ($course = self::get_course_by_idnumber($record->course_idnumber)) {
             $response->course = $course;
@@ -161,19 +156,19 @@ class tool_uploadexternalcontentresults_helper {
                         $response->added = 0;
                     }
                 } else {
-                    $message .= 'External content with idnumber '.$record->course_idnumber.' does not exist.';
-                    $response->message = $message;
+                    $response->message = get_string('externalcontentdoesnotexist',
+                                                    'tool_uploadexternalcontentresults',
+                                                    $record->course_idnumber);
                     $response->skipped = 1;
                     $response->added = 0;
                 }
             } else {
                 $response->skipped = 1;
-                $response->message = 'User with username '.$record->user_username.' does not exist.';
+                $response->message = get_string('userdoesnotexist', 'tool_uploadexternalcontentresults', $record->user_username);
             }
         } else {
             // Course does not exist so skip.
-            $message .= 'Course with idnumber '.$record->course_idnumber.' does not exist.';
-            $response->message = $message;
+            $response->message = get_string('coursedoesnotexist', 'tool_uploadexternalcontentresults', $record->course_idnumber);
             $response->skipped = 1;
         }
 

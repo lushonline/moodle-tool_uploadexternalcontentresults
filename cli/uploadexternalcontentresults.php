@@ -98,12 +98,9 @@ $importer = new tool_uploadexternalcontentresults_importer($content, $options['e
 $importid = $importer->get_importid();
 unset($content);
 
-$error = $importer->get_error();
-if ($error) {
-    print_error('invalidimportfile', 'tool_uploadexternalcontentresults', '', $importer->get_error());
-} else if (count($importer->records) == 0) {
-    print_error('csvemptyfile', 'error', '', $importer->get_error());
+if ($importer->haserrors()) {
+    print_error('invalidimportfile', 'tool_uploadexternalcontentresults', '', implode(PHP_EOL, $importer->get_error()));
 }
 
 $importer = new tool_uploadexternalcontentresults_importer(null, null, null, $importid, null);
-$importer->execute(new tool_uploadexternalcontentresults_tracker(tool_uploadexternalcontentresults_tracker::OUTPUT_PLAIN));
+$importer->execute(new tool_uploadexternalcontentresults_tracker(tool_uploadexternalcontentresults_tracker::OUTPUT_PLAIN, true));
