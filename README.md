@@ -13,6 +13,13 @@ The import enrols the student into the course, marks the activity viewed, if the
 
 The way Moodle handles the means for the grade and completion it is the date of the import you cannotimport the date of the completion as recorded in the external system.
 
+There are two versions depending on the Moodle version used:
+
+|BRANCH         |MOODLE VERSIONS|
+|---------------|---------------|
+|[moodle33](https://github.com/lushonline/moodle-tool_uploadexternalcontentresults/tree/moodle33)|v3.2 - v3.4|
+|[master](https://github.com/lushonline/moodle-tool_uploadexternalcontentresults)|v3.5 - v3.9|
+
 - [Installation](#installation)
 - [Usage](#usage)
 
@@ -46,7 +53,7 @@ The way Moodle handles the means for the grade and completion it is the date of 
    ```
 
    Or install via the Moodle plugin directory:
-     
+
     https://moodle.org/plugins/tool_uploadexternalcontentresults
 
 4. Then run the Moodle upgrade
@@ -55,7 +62,23 @@ This plugin requires no configuration.
 
 ## Usage
 
-For more information see the [Wiki Pages](https://github.com/lushonline/moodle-tool_uploadexternalcontentresults/wiki)
+For more information include file formats and how to run from the command line see the [Wiki Pages](https://github.com/lushonline/moodle-tool_uploadexternalcontentresults/wiki)
+
+## License ##
+
+2019-2020 LushOnline
+
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with
+this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ## Acknowledgements
 
