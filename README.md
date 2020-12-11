@@ -1,5 +1,5 @@
 # tool_uploadexternalcontentresults
-[![Build Status](https://travis-ci.org/lushonline/moodle-tool_uploadexternalcontentresults.svg?branch=master)](https://travis-ci.org/lushonline/moodle-tool_uploadexternalcontentresults)
+![Moodle Plugin CI](https://github.com/lushonline/moodle-tool_uploadexternalcontentresults/workflows/Moodle%20Plugin%20CI/badge.svg?branch=moodle33)
 
 A tool to allow import of completion results for External content activities using a text delimited file.
 
