@@ -61,5 +61,5 @@ Feature: An admin can update results for an external content course using a text
     And I upload "admin/tool/uploadexternalcontentresults/tests/fixtures/onecourseresult_nocourse.csv" file to "CSV file" filemanager
     And I press "Import"
     And I press "Confirm"
-    And I should see "Course with idnumber B1b49aa30-e719-11e6-9835-f723b46a2688 does not exist"
+    And I should see "External content with idnumber B1b49aa30-e719-11e6-9835-f723b46a2688 does not exist"
     And I should see "Completions skipped: 1"
