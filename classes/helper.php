@@ -167,20 +167,24 @@ class tool_uploadexternalcontentresults_helper {
                     }
                 } else {
                     // Course does not exist so skip.
-                    $response->message = get_string('coursedoesnotexist', 'tool_uploadexternalcontentresults', $record->course_idnumber);
-                    $response->skipped = 1;
-                };
-            } else {
-                    $response->message = get_string('externalcontentdoesnotexist',
+                    $response->message = get_string('coursedoesnotexist',
                                                     'tool_uploadexternalcontentresults',
                                                     $record->course_idnumber);
                     $response->skipped = 1;
-                    $response->added = 0;
-                }
+                };
+            } else {
+                $response->message = get_string('externalcontentdoesnotexist',
+                                                'tool_uploadexternalcontentresults',
+                                                $record->course_idnumber);
+                $response->skipped = 1;
+                $response->added = 0;
+            }
         } else {
             // User doesn't exist.
             $response->skipped = 1;
-            $response->message = get_string('userdoesnotexist', 'tool_uploadexternalcontentresults', $record->user_username);
+            $response->message = get_string('userdoesnotexist',
+                                            'tool_uploadexternalcontentresults',
+                                            $record->user_username);
         }
 
         return $response;
