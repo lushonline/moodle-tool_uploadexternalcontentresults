@@ -1,20 +1,25 @@
 # tool_uploadexternalcontentresults
 ![Moodle Plugin CI](https://github.com/lushonline/moodle-tool_uploadexternalcontentresults/workflows/Moodle%20Plugin%20CI/badge.svg?branch=master)
 
+
+- [Installation](#installation)
+- [Usage](#usage)
+
 A tool to allow import of completion results for External content activities using a text delimited file.
 
 The External content activity is available here:
 [moodle-mod_externalcontent](https://github.com/lushonline/moodle-mod_externalcontent)
 
-The Course and External content activity should have been uploaded using the
-[moodle-tool_uploadexternalcontent](https://github.com/lushonline/moodle-tool_uploadexternalcontent) as this correctly configures the Course and Activity ID Number.
+The External content activity is identified by matching the [COURSE_IDNUMBER](https://github.com/lushonline/moodle-tool_uploadexternalcontentresults/wiki/Format-of-Import-File) in the import file against the External Content Activity Item [ID Number](https://docs.moodle.org/310/en/Common_module_settings#ID_number) 
 
-The import enrols the student into the course, marks the activity viewed, if the import set EXTERNAL_MARKCOMPLETEEXTERNALLY=true the activity is also marked as Completed and if a score is included a grade is added.
+The import process does the following:
+- enrols the student into the course, if they are not already enrolled
+- marks the activity viewed
+- if [USER_COMPLETED=1](https://github.com/lushonline/moodle-tool_uploadexternalcontentresults/wiki/Format-of-Import-File) and the activity is configured as Completable Externally it will be marked as Complete
+- if optional score is included a grade is added for the activity.
 
-The way Moodle handles the means for the grade and completion it is the date of the import you cannotimport the date of the completion as recorded in the external system.
+The way Moodle handles teh viewed and completion process it is the date of the import that is used, you cannot import the date of the completion from the external system.
 
-- [Installation](#installation)
-- [Usage](#usage)
 
 ## Installation
 
