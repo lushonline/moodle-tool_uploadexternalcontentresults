@@ -148,6 +148,7 @@ class tool_uploadexternalcontentresults_helper {
             if ($cm = self::get_cm_by_idnumber($record->course_idnumber)) {
                 // If we have a course module we must have a course, so get the course.
                 if ($course = self::get_course_by_id($cm->course)) {
+                    $response->course = $course;
                     // Student role to use when enroling user.
                     $studentrole = $DB->get_record('role', array('shortname' => 'student'));
 
