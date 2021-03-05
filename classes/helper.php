@@ -58,32 +58,38 @@ class tool_uploadexternalcontentresults_helper {
     }
 
     /**
-     * Retrieve a externalcontent by its id.
+     * Retrieve the course module with idnumber
      *
-     * @param int $externalcontentid externalcontent identifier
-     * @return object externalcontent.
+     * @param string $idnumber Unique idnumber
+     * @return object|null coursemodule or null
      */
-    public static function get_externalcontent_by_id($externalcontentid) {
+    public static function get_cm_by_idnumber($idnumber) {
         global $DB;
 
-        $params = array('id' => $externalcontentid);
-        if ($externalcontent = $DB->get_record('externalcontent', $params)) {
-            return $externalcontent;
+        $params = array('courseidnumber' => $idnumber, 'modulename' => 'externalcontent');
+
+        $sql = "SELECT cm.*
+                FROM {course_modules} cm
+                JOIN {modules} md ON md.id = cm.module
+                WHERE cm.idnumber = :courseidnumber AND md.name = :modulename";
+
+        if ($cm = $DB->get_record_sql($sql, $params)) {
+            return $cm;
         } else {
-             return null;
+            return null;
         }
     }
 
     /**
-     * Retrieve a course by its idnumber.
+     * Retrieve a course by its id.
      *
-     * @param string $courseidnumber course idnumber
-     * @return object course or null
+     * @param string $courseid course id.
+     * @return object|null course or null.
      */
-    public static function get_course_by_idnumber($courseidnumber) {
+    public static function get_course_by_id($courseid) {
         global $DB;
 
-        $params = array('idnumber' => $courseidnumber);
+        $params = array('id' => $courseid);
         if ($course = $DB->get_record('course', $params)) {
             return $course;
         } else {
@@ -92,21 +98,21 @@ class tool_uploadexternalcontentresults_helper {
     }
 
     /**
-     * Retrieve course module $cm by course idnumber.
+     * Retrieve a user by username.
      *
-     * use modinfolib.php
-     *
-     * @param string $course course object
-     * @return stdClass $cm Activity or null if none found
+     * @param string $username Moodle username.
+     * @return object|null user or null.
      */
-    public static function get_coursemodule_from_course_idnumber($course) {
+    public static function get_user_by_username($username) {
         global $DB;
 
-        $cm = null;
-        $params = array('idnumber' => $course->idnumber, 'course' => $course->id);
-        $cm = $DB->get_record('course_modules', $params);
+        $params = array('username' => $username);
 
-        return $cm;
+        if ($user = $DB->get_record('user', $params, 'id,username')) {
+            return $user;
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -131,21 +137,25 @@ class tool_uploadexternalcontentresults_helper {
         $response->error = 0;
         $response->message = null;
 
-        // Student role to use when enroling user.
-        $studentrole = $DB->get_record('role', array('shortname' => 'student'));
-        // Get the course by the idnumber.
-        if ($course = self::get_course_by_idnumber($record->course_idnumber)) {
-            $response->course = $course;
-            if ($user = $DB->get_record('user', array('username' => $record->user_username), 'id,username')) {
-                $response->user = $user;
+        $cm = null;
+        $course = null;
+        $user = null;
 
-                if ($cm = self::get_coursemodule_from_course_idnumber($course)) {
+        // Check the user exists.
+        if ($user = self::get_user_by_username($record->user_username)) {
+            // Get the course module by the idnumber.
+            if ($cm = self::get_cm_by_idnumber($record->course_idnumber)) {
+                // If we have a course module we must have a course, so get the course.
+                if ($course = self::get_course_by_id($cm->course)) {
+                    // Student role to use when enroling user.
+                    $studentrole = $DB->get_record('role', array('shortname' => 'student'));
 
                     // Execute real Moodle enrolment for user.
                     enrol_try_internal_enrol($course->id, $user->id, $studentrole->id);
 
                     $updateresponse = externalcontent_update_completion_state($course, $cm, null, $user->id,
-                                                                              $record->user_score, $record->user_completed);
+                            $record->user_score, $record->user_completed);
+
                     $response->message = $updateresponse->message;
 
                     if ($updateresponse->status) {
@@ -156,20 +166,21 @@ class tool_uploadexternalcontentresults_helper {
                         $response->added = 0;
                     }
                 } else {
+                    // Course does not exist so skip.
+                    $response->message = get_string('coursedoesnotexist', 'tool_uploadexternalcontentresults', $record->course_idnumber);
+                    $response->skipped = 1;
+                };
+            } else {
                     $response->message = get_string('externalcontentdoesnotexist',
                                                     'tool_uploadexternalcontentresults',
                                                     $record->course_idnumber);
                     $response->skipped = 1;
                     $response->added = 0;
                 }
-            } else {
-                $response->skipped = 1;
-                $response->message = get_string('userdoesnotexist', 'tool_uploadexternalcontentresults', $record->user_username);
-            }
         } else {
-            // Course does not exist so skip.
-            $response->message = get_string('coursedoesnotexist', 'tool_uploadexternalcontentresults', $record->course_idnumber);
+            // User doesn't exist.
             $response->skipped = 1;
+            $response->message = get_string('userdoesnotexist', 'tool_uploadexternalcontentresults', $record->user_username);
         }
 
         return $response;
