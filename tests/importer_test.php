@@ -208,7 +208,7 @@ class tool_uploadexternalcontentresults_importer_testcase extends advanced_testc
         $results = $importer->execute(new tool_uploadexternalcontentresults_tracker(
                                         tool_uploadexternalcontentresults_tracker::OUTPUT_PLAIN, false));
 
-        $this->assertRegexp("/Course with idnumber B1b49aa30-e719-11e6-9835-f723b46a2688 does not exist/", $results);
+        $this->assertRegexp("/External content with idnumber B1b49aa30-e719-11e6-9835-f723b46a2688 does not exist/", $results);
     }
 
     /**
