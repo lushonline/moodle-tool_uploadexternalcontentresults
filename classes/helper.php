@@ -143,6 +143,7 @@ class tool_uploadexternalcontentresults_helper {
 
         // Check the user exists.
         if ($user = self::get_user_by_username($record->user_username)) {
+            $response->user = $user;
             // Get the course module by the idnumber.
             if ($cm = self::get_cm_by_idnumber($record->course_idnumber)) {
                 // If we have a course module we must have a course, so get the course.
