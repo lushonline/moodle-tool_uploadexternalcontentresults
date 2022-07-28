@@ -20,7 +20,7 @@
  * Class containing a set of helpers, based on admin\tool\uploadcourse by 2013 Frédéric Massart.
  *
  * @package    tool_uploadexternalcontentresults
- * @copyright  2019-2020 LushOnline
+ * @copyright  2019-2022 LushOnline
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 defined('MOODLE_INTERNAL') || die;
@@ -35,7 +35,7 @@ require_once($CFG->dirroot . '/course/lib.php');
  * Class containing a set of helpers.
  *
  * @package   tool_uploadexternalcontentresults
- * @copyright 2019-2020 LushOnline
+ * @copyright 2019-2022 LushOnline
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class tool_uploadexternalcontentresults_helper {

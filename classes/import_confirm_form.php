@@ -18,7 +18,7 @@
  * This file contains the form to confirm the column mapping.
  *
  * @package   tool_uploadexternalcontentresults
- * @copyright 2019-2020 LushOnline
+ * @copyright 2019-2022 LushOnline
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -29,7 +29,7 @@ require_once($CFG->libdir.'/formslib.php');
  * The form to to confirm the column mapping.
  *
  * @package   tool_uploadexternalcontentresults
- * @copyright 2019-2020 LushOnline
+ * @copyright 2019-2022 LushOnline
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class tool_uploadexternalcontentresults_import_confirm_form extends moodleform {

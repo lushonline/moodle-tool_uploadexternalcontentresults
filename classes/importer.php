@@ -18,16 +18,15 @@
  * This file contains the procesing for the add/update of a single external content course result.
  *
  * @package   tool_uploadexternalcontentresults
- * @copyright 2019-2020 LushOnline
+ * @copyright 2019-2022 LushOnline
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-defined('MOODLE_INTERNAL') || die('Direct access to this script is forbidden.');
 
 /**
  * Main processing class for adding and updating single external content course result.
  *
  * @package   tool_uploadexternalcontentresults
- * @copyright 2019-2020 LushOnline
+ * @copyright 2019-2022 LushOnline
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class tool_uploadexternalcontentresults_importer {

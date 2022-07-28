@@ -18,22 +18,21 @@
  * Importer tests
  *
  * @package    tool_uploadexternalcontentresults
- * @copyright  2019-2020 LushOnline
+ * @copyright  2019-2022 LushOnline
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- *
+ * @covers \tool_uploadexternalcontentresults_importer
  */
-
-defined('MOODLE_INTERNAL') || die();
+namespace tool_uploadexternalcontentresults;
 
 /**
  * Importer tests
  *
  * @package    tool_uploadexternalcontentresults
- * @copyright  2019-2020 LushOnline
+ * @copyright  2019-2022 LushOnline
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  */
-class tool_uploadexternalcontentresults_importer_testcase extends advanced_testcase {
+class importer_test extends \advanced_testcase {
 
     /**
      * course
@@ -114,7 +113,7 @@ class tool_uploadexternalcontentresults_importer_testcase extends advanced_testc
 
         $this->cm = get_coursemodule_from_instance('externalcontent', $this->externalcontent->id);
 
-        $criterion = new completion_criteria_activity();
+        $criterion = new \completion_criteria_activity();
 
         // Criteria for course.
         $criteriadata = new \stdClass();
@@ -129,19 +128,19 @@ class tool_uploadexternalcontentresults_importer_testcase extends advanced_testc
             'criteriatype'  => null,
             'method'        => COMPLETION_AGGREGATION_ALL
         );
-        $aggregation = new completion_aggregation($aggdata);
+        $aggregation = new \completion_aggregation($aggdata);
         $aggregation->save();
 
         $aggdata['criteriatype'] = COMPLETION_CRITERIA_TYPE_ACTIVITY;
-        $aggregation = new completion_aggregation($aggdata);
+        $aggregation = new \completion_aggregation($aggdata);
         $aggregation->save();
 
         $aggdata['criteriatype'] = COMPLETION_CRITERIA_TYPE_COURSE;
-        $aggregation = new completion_aggregation($aggdata);
+        $aggregation = new \completion_aggregation($aggdata);
         $aggregation->save();
 
         $aggdata['criteriatype'] = COMPLETION_CRITERIA_TYPE_ROLE;
-        $aggregation = new completion_aggregation($aggdata);
+        $aggregation = new \completion_aggregation($aggdata);
         $aggregation->save();
     }
 
@@ -149,21 +148,22 @@ class tool_uploadexternalcontentresults_importer_testcase extends advanced_testc
      * Confirms that a single course and single activity can be created
      *
      * @return void
+     * @covers \tool_uploadexternalcontentresults_importer
      */
     public function test_create() {
         $this->setAdminUser();
         $source = __DIR__.'/fixtures/onecourseresult.csv';
         $content = file_get_contents($source);
 
-        $importer = new tool_uploadexternalcontentresults_importer($content, null, null);
+        $importer = new \tool_uploadexternalcontentresults_importer($content, null, null);
         $importid = $importer->get_importid();
 
-        $importer = new tool_uploadexternalcontentresults_importer(null, null, null, $importid, null);
+        $importer = new \tool_uploadexternalcontentresults_importer(null, null, null, $importid, null);
         $importer->execute();
 
         // Check completion status.
         // Get the current state for the activity and user.
-        $completion = new completion_info($this->course);
+        $completion = new \completion_info($this->course);
         $currentstate = $completion->get_data($this->cm, false, $this->student->id, null);
 
         $this->assertEquals(COMPLETION_VIEWED, $currentstate->viewed);
@@ -174,20 +174,21 @@ class tool_uploadexternalcontentresults_importer_testcase extends advanced_testc
      * Confirms an error text is returned if an none existent user exists
      *
      * @return void
+     * @covers \tool_uploadexternalcontentresults_importer
      */
     public function test_invalid_user() {
         $this->setAdminUser();
         $source = __DIR__.'/fixtures/onecourseresult_nouser.csv';
         $content = file_get_contents($source);
 
-        $importer = new tool_uploadexternalcontentresults_importer($content, null, null);
+        $importer = new \tool_uploadexternalcontentresults_importer($content, null, null);
         $importid = $importer->get_importid();
 
-        $importer = new tool_uploadexternalcontentresults_importer(null, null, null, $importid, null);
-        $results = $importer->execute(new tool_uploadexternalcontentresults_tracker(
-                                        tool_uploadexternalcontentresults_tracker::OUTPUT_PLAIN, false));
+        $importer = new \tool_uploadexternalcontentresults_importer(null, null, null, $importid, null);
+        $results = $importer->execute(new \tool_uploadexternalcontentresults_tracker(
+                                        \tool_uploadexternalcontentresults_tracker::OUTPUT_PLAIN, false));
 
-        $this->assertRegexp("/User with username student999 does not exist/", $results);
+        $this->assertMatchesRegularExpression("/User with username student999 does not exist/", $results);
     }
 
 
@@ -195,33 +196,37 @@ class tool_uploadexternalcontentresults_importer_testcase extends advanced_testc
      * Confirms an error text is returned if an none existent course exists
      *
      * @return void
+     * @covers \tool_uploadexternalcontentresults_importer
      */
     public function test_invalid_course() {
         $this->setAdminUser();
         $source = __DIR__.'/fixtures/onecourseresult_nocourse.csv';
         $content = file_get_contents($source);
 
-        $importer = new tool_uploadexternalcontentresults_importer($content, null, null);
+        $importer = new \tool_uploadexternalcontentresults_importer($content, null, null);
         $importid = $importer->get_importid();
 
-        $importer = new tool_uploadexternalcontentresults_importer(null, null, null, $importid, null);
-        $results = $importer->execute(new tool_uploadexternalcontentresults_tracker(
-                                        tool_uploadexternalcontentresults_tracker::OUTPUT_PLAIN, false));
+        $importer = new \tool_uploadexternalcontentresults_importer(null, null, null, $importid, null);
+        $results = $importer->execute(new \tool_uploadexternalcontentresults_tracker(
+                                        \tool_uploadexternalcontentresults_tracker::OUTPUT_PLAIN, false));
 
-        $this->assertRegexp("/External content with idnumber B1b49aa30-e719-11e6-9835-f723b46a2688 does not exist/", $results);
+        $this->assertMatchesRegularExpression(
+            "/External content with idnumber B1b49aa30-e719-11e6-9835-f723b46a2688 does not exist/",
+            $results);
     }
 
     /**
      * Confirms an error text is returned if empty CSV file
      *
      * @return void
+     * @covers \tool_uploadexternalcontentresults_importer
      */
     public function test_empty_csv() {
         $this->setAdminUser();
         $source = __DIR__.'/fixtures/empty.csv';
         $content = file_get_contents($source);
 
-        $importer = new tool_uploadexternalcontentresults_importer($content, null, null);
+        $importer = new \tool_uploadexternalcontentresults_importer($content, null, null);
         $this->assertTrue($importer->haserrors(), 'Error Messages: '.implode(PHP_EOL, $importer->geterrors()));
     }
 
@@ -229,14 +234,14 @@ class tool_uploadexternalcontentresults_importer_testcase extends advanced_testc
      * Confirms an error text is returned if not enough columns in CSV file
      *
      * @return void
+     * @covers \tool_uploadexternalcontentresults_importer
      */
     public function test_not_enough_columns() {
         $this->setAdminUser();
         $source = __DIR__.'/fixtures/notenoughcolumns.csv';
         $content = file_get_contents($source);
 
-        $importer = new tool_uploadexternalcontentresults_importer($content, null, null);
+        $importer = new \tool_uploadexternalcontentresults_importer($content, null, null);
         $this->assertTrue($importer->haserrors(), 'Error Messages: '.implode(PHP_EOL, $importer->geterrors()));
     }
-
 }

@@ -18,18 +18,16 @@
  * Privacy Subsystem implementation for tool_uploadexternalcontentresults.
  *
  * @package    tool_uploadexternalcontentresults
- * @copyright  2019-2020 LushOnline
+ * @copyright  2019-2022 LushOnline
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 namespace tool_uploadexternalcontentresults\privacy;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Privacy Subsystem for tool_uploadexternalcontentresults implementing null_provider.
  *
- * @copyright  2019-2020 LushOnline
+ * @copyright  2019-2022 LushOnline
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class provider implements \core_privacy\local\metadata\null_provider {
