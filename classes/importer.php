@@ -21,6 +21,7 @@
  * @copyright 2019-2022 LushOnline
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+namespace tool_uploadexternalcontentresults;
 
 /**
  * Main processing class for adding and updating single external content course result.
@@ -29,7 +30,7 @@
  * @copyright 2019-2022 LushOnline
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class tool_uploadexternalcontentresults_importer {
+class importer {
 
     /**
      * @var array $error   Last error message.
@@ -191,8 +192,8 @@ class tool_uploadexternalcontentresults_importer {
             return false;
         }
 
-        $this->importid = csv_import_reader::get_new_iid($type);
-        $this->importer = new csv_import_reader($this->importid, $type);
+        $this->importid = \csv_import_reader::get_new_iid($type);
+        $this->importer = new \csv_import_reader($this->importid, $type);
 
         if (!$this->importer->load_csv_content($text, $encoding, $delimiter)) {
             $this->importer->cleanup();
@@ -226,7 +227,7 @@ class tool_uploadexternalcontentresults_importer {
                 return;
             }
         } else {
-            $this->importer = new csv_import_reader($this->importid, $type);
+            $this->importer = new \csv_import_reader($this->importid, $type);
         }
 
         if (!$this->importer->init()) {
@@ -297,19 +298,19 @@ class tool_uploadexternalcontentresults_importer {
      */
     public function execute($tracker = null) {
         if ($this->processstarted) {
-              throw new coding_exception('Process has already been started');
+              throw new \coding_exception('Process has already been started');
         }
         $this->processstarted = true;
 
         if (empty($tracker)) {
-              $tracker = new tool_uploadexternalcontentresults_tracker(tool_uploadexternalcontentresults_tracker::NO_OUTPUT);
+              $tracker = new \tool_uploadexternalcontentresults\tracker(\tool_uploadexternalcontentresults\tracker::NO_OUTPUT);
         }
         $tracker->start();
 
         $total = $added = $skipped = $errors = 0;
 
         // We will most certainly need extra time and memory to process big files.
-        core_php_time_limit::raise();
+        \core_php_time_limit::raise();
         raise_memory_limit(MEMORY_EXTRA);
 
         $completionaddedmsg = get_string('statuscompletionadded', 'tool_uploadexternalcontentresults');
@@ -321,8 +322,8 @@ class tool_uploadexternalcontentresults_importer {
             $this->linenb++;
             $total++;
 
-            if (tool_uploadexternalcontentresults_helper::validate_import_record($record)) {
-                $response = tool_uploadexternalcontentresults_helper::mark_externalcontent_as_completed($record);
+            if (\tool_uploadexternalcontentresults\helper::validate_import_record($record)) {
+                $response = \tool_uploadexternalcontentresults\helper::mark_externalcontent_as_completed($record);
                 $added = $added + $response->added;
                 $skipped = $skipped + $response->skipped;
 

@@ -21,6 +21,7 @@
  * @copyright  2019-2022 LushOnline
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+namespace tool_uploadexternalcontentresults;
 
 define('CLI_SCRIPT', true);
 
@@ -90,7 +91,7 @@ if (!file_exists($options['source'])) {
 }
 
 // Encoding.
-$encodings = core_text::get_encodings();
+$encodings = \core_text::get_encodings();
 if (!isset($encodings[$options['encoding']])) {
     echo "Errors Reported during import:".PHP_EOL;
     echo get_string('invalidencoding', 'tool_uploadexternalcontent')."\n";
@@ -102,7 +103,7 @@ cron_setup_user();
 
 // Let's get started!
 $content = file_get_contents($options['source']);
-$importer = new tool_uploadexternalcontentresults_importer($content, $options['encoding'], $options['delimiter']);
+$importer = new \tool_uploadexternalcontentresults\importer($content, $options['encoding'], $options['delimiter']);
 
 $importid = $importer->get_importid();
 unset($content);
@@ -113,5 +114,5 @@ if ($importer->haserrors()) {
     die();
 }
 
-$importer = new tool_uploadexternalcontentresults_importer(null, null, null, $importid, null);
-$importer->execute(new tool_uploadexternalcontentresults_tracker(tool_uploadexternalcontentresults_tracker::OUTPUT_PLAIN, true));
+$importer = new \tool_uploadexternalcontentresults\importer(null, null, null, $importid, null);
+$importer->execute(new \tool_uploadexternalcontentresults\tracker(\tool_uploadexternalcontentresults\tracker::OUTPUT_PLAIN, true));

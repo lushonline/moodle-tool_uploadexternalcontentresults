@@ -21,6 +21,7 @@
  * @copyright 2019-2022 LushOnline
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+namespace tool_uploadexternalcontentresults;
 
 defined('MOODLE_INTERNAL') || die('Direct access to this script is forbidden.');
 require_once($CFG->libdir.'/formslib.php');
@@ -32,7 +33,7 @@ require_once($CFG->libdir.'/formslib.php');
  * @copyright 2019-2022 LushOnline
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class tool_uploadexternalcontentresults_import_confirm_form extends moodleform {
+class import_confirm_form extends \moodleform {
 
     /**
      * Define the form - called by parent constructor

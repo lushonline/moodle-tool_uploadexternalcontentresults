@@ -23,6 +23,8 @@
  * @copyright  2019-2022 LushOnline
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+namespace tool_uploadexternalcontentresults;
+
 defined('MOODLE_INTERNAL') || die;
 
 global $CFG;
@@ -38,7 +40,7 @@ require_once($CFG->dirroot . '/course/lib.php');
  * @copyright 2019-2022 LushOnline
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class tool_uploadexternalcontentresults_helper {
+class helper {
     /**
      * Validate we have the minimum info to create/update course result
      *
