@@ -18,7 +18,7 @@
  * This file contains the tracking reporting, based on tool_uploadcourse 2013 Frédéric Massart.
  *
  * @package   tool_uploadexternalcontentresults
- * @copyright 2019-2022 LushOnline
+ * @copyright 2019-2023 LushOnline
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 namespace tool_uploadexternalcontentresults;
@@ -30,7 +30,7 @@ require_once($CFG->libdir . '/weblib.php');
  * The tracking reporting class.
  *
  * @package   tool_uploadexternalcontentresults
- * @copyright 2019-2022 LushOnline
+ * @copyright 2019-2023 LushOnline
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class tracker {

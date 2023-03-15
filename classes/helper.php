@@ -20,7 +20,7 @@
  * Class containing a set of helpers, based on admin\tool\uploadcourse by 2013 Frédéric Massart.
  *
  * @package    tool_uploadexternalcontentresults
- * @copyright  2019-2022 LushOnline
+ * @copyright  2019-2023 LushOnline
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 namespace tool_uploadexternalcontentresults;
@@ -37,7 +37,7 @@ require_once($CFG->dirroot . '/course/lib.php');
  * Class containing a set of helpers.
  *
  * @package   tool_uploadexternalcontentresults
- * @copyright 2019-2022 LushOnline
+ * @copyright 2019-2023 LushOnline
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class helper {

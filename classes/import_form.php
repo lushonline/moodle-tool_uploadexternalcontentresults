@@ -18,7 +18,7 @@
  * This file contains the form for selecting the results import file.
  *
  * @package   tool_uploadexternalcontentresults
- * @copyright 2019-2022 LushOnline
+ * @copyright 2019-2023 LushOnline
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 namespace tool_uploadexternalcontentresults;
@@ -30,7 +30,7 @@ require_once($CFG->libdir.'/formslib.php');
  * The form for selecting the results import file.
  *
  * @package   tool_uploadexternalcontentresults
- * @copyright 2019-2022 LushOnline
+ * @copyright 2019-2023 LushOnline
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class import_form extends \moodleform {
