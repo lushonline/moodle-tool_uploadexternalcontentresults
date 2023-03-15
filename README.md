@@ -10,7 +10,7 @@ A tool to allow import of completion results for External content activities usi
 The External content activity is available here:
 [moodle-mod_externalcontent](https://github.com/lushonline/moodle-mod_externalcontent)
 
-The External content activity is identified by matching the [COURSE_IDNUMBER](https://github.com/lushonline/moodle-tool_uploadexternalcontentresults/wiki/Format-of-Import-File) in the import file against the External Content Activity Item [ID Number](https://docs.moodle.org/310/en/Common_module_settings#ID_number) 
+The External content activity is identified by matching the [COURSE_IDNUMBER](https://github.com/lushonline/moodle-tool_uploadexternalcontentresults/wiki/Format-of-Import-File) in the import file against the External Content Activity Item [ID Number](https://docs.moodle.org/310/en/Common_module_settings#ID_number)
 
 The import process does the following:
 - enrols the student into the course, if they are not already enrolled
@@ -24,7 +24,7 @@ The way Moodle handles teh viewed and completion process it is the date of the i
 ## Installation
 
 ---
-1. Install the External content activity module.
+1. Install the External content activity module v2023031400 or later.
 
    ```sh
    git clone https://github.com/lushonline/moodle-mod_externalcontent.git mod/externalcontent
@@ -51,7 +51,7 @@ The way Moodle handles teh viewed and completion process it is the date of the i
    ```
 
    Or install via the Moodle plugin directory:
-     
+
     https://moodle.org/plugins/tool_uploadexternalcontentresults
 
 4. Then run the Moodle upgrade
