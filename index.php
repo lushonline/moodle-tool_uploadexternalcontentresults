@@ -18,10 +18,11 @@
  * Import a framework.
  *
  * @package    tool_uploadexternalcontentresults
- * @copyright  2019-2022 LushOnline
+ * @copyright  2019-2023 LushOnline
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  */
+namespace tool_uploadexternalcontentresults;
 
 require_once(__DIR__ . '/../../../config.php');
 require_once($CFG->libdir.'/adminlib.php');
@@ -31,9 +32,9 @@ admin_externalpage_setup('tooluploadexternalcontentresults');
 
 $pagetitle = get_string('pluginname', 'tool_uploadexternalcontentresults');
 
-$context = context_system::instance();
+$context = \context_system::instance();
 
-$url = new moodle_url("/admin/tool/uploadexternalcontentresults/index.php");
+$url = new \moodle_url("/admin/tool/uploadexternalcontentresults/index.php");
 $PAGE->set_context($context);
 $PAGE->set_url($url);
 $PAGE->set_title($pagetitle);
@@ -50,7 +51,7 @@ $delimiter = null;
 
 // First time - import_form returns a 0, and import_confirm_form a 1.
 if (empty($importid)) {
-    $mform1 = new tool_uploadexternalcontentresults_import_form($url->out(false));
+    $mform1 = new \tool_uploadexternalcontentresults\import_form($url->out(false));
     // Was the first form submitted.
     if ($form1data = $mform1->get_data()) {
         $text = $mform1->get_file_content('importfile');
@@ -66,24 +67,24 @@ if (empty($importid)) {
     }
 }
 
-$importer = new tool_uploadexternalcontentresults_importer($text, $encoding, $delimiter);
+$importer = new \tool_uploadexternalcontentresults\importer($text, $encoding, $delimiter);
 if ($importer->haserrors() && empty($importid)) {
-    throw new moodle_exception('invalidfileexception',
+    throw new \moodle_exception('invalidfileexception',
                                 'tool_uploadexternalcontentresults',
                                 $url,
                                 implode(PHP_EOL, $importer->geterrors())
     );
 }
-$mform2 = new tool_uploadexternalcontentresults_import_confirm_form(null, $importer);
+$mform2 = new \tool_uploadexternalcontentresults\import_confirm_form(null, $importer);
 
 // Was the second form submitted.
 if ($form2data = $mform2->is_cancelled()) {
     redirect($url);
 } else if ($form2data = $mform2->get_data()) {
     $importid = $form2data->importid;
-    $importer = new tool_uploadexternalcontentresults_importer(null, null, null, $importid, $form2data);
-    $processingresponse = $importer->execute(new tool_uploadexternalcontentresults_tracker(
-        tool_uploadexternalcontentresults_tracker::OUTPUT_HTML, false)
+    $importer = new \tool_uploadexternalcontentresults\importer(null, null, null, $importid, $form2data);
+    $processingresponse = $importer->execute(new \tool_uploadexternalcontentresults\tracker(
+        \tool_uploadexternalcontentresults\tracker::OUTPUT_HTML, false)
     );
     echo $OUTPUT->header();
     echo $OUTPUT->heading(get_string('uploadexternalcontentresultsresult', 'tool_uploadexternalcontentresults'));

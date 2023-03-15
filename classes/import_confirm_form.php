@@ -18,9 +18,10 @@
  * This file contains the form to confirm the column mapping.
  *
  * @package   tool_uploadexternalcontentresults
- * @copyright 2019-2022 LushOnline
+ * @copyright 2019-2023 LushOnline
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+namespace tool_uploadexternalcontentresults;
 
 defined('MOODLE_INTERNAL') || die('Direct access to this script is forbidden.');
 require_once($CFG->libdir.'/formslib.php');
@@ -29,10 +30,10 @@ require_once($CFG->libdir.'/formslib.php');
  * The form to to confirm the column mapping.
  *
  * @package   tool_uploadexternalcontentresults
- * @copyright 2019-2022 LushOnline
+ * @copyright 2019-2023 LushOnline
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class tool_uploadexternalcontentresults_import_confirm_form extends moodleform {
+class import_confirm_form extends \moodleform {
 
     /**
      * Define the form - called by parent constructor

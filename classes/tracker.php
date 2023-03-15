@@ -18,9 +18,11 @@
  * This file contains the tracking reporting, based on tool_uploadcourse 2013 Frédéric Massart.
  *
  * @package   tool_uploadexternalcontentresults
- * @copyright 2019-2022 LushOnline
+ * @copyright 2019-2023 LushOnline
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+namespace tool_uploadexternalcontentresults;
+
 defined('MOODLE_INTERNAL') || die();
 require_once($CFG->libdir . '/weblib.php');
 
@@ -28,10 +30,10 @@ require_once($CFG->libdir . '/weblib.php');
  * The tracking reporting class.
  *
  * @package   tool_uploadexternalcontentresults
- * @copyright 2019-2022 LushOnline
+ * @copyright 2019-2023 LushOnline
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class tool_uploadexternalcontentresults_tracker {
+class tracker {
 
     /**
      * Constant to output nothing.
@@ -78,11 +80,11 @@ class tool_uploadexternalcontentresults_tracker {
     public function __construct($outputmode = self::NO_OUTPUT, $passthrough = null) {
         $this->outputmode = $outputmode;
         if ($this->outputmode == self::OUTPUT_PLAIN) {
-            $this->buffer = new progress_trace_buffer(new text_progress_trace(), $passthrough);
+            $this->buffer = new \progress_trace_buffer(new \text_progress_trace(), $passthrough);
         }
 
         if ($this->outputmode == self::OUTPUT_HTML) {
-            $this->buffer = new progress_trace_buffer(new text_progress_trace(), $passthrough);
+            $this->buffer = new \progress_trace_buffer(new \text_progress_trace(), $passthrough);
         }
     }
 
@@ -113,7 +115,7 @@ class tool_uploadexternalcontentresults_tracker {
      * @return void
      */
     private function writehtmltablecell($message, $column) {
-        $this->buffer->output(html_writer::tag('td',
+        $this->buffer->output(\html_writer::tag('td',
             $message,
             array('class' => 'c' . $column)
         ));
@@ -127,7 +129,7 @@ class tool_uploadexternalcontentresults_tracker {
      * @return void
      */
     private function writehtmltableheader($message, $column) {
-        $this->buffer->output(html_writer::tag('th',
+        $this->buffer->output(\html_writer::tag('th',
             $message,
             array('class' => 'c' . $column,
             'scope' => 'col'
@@ -142,7 +144,7 @@ class tool_uploadexternalcontentresults_tracker {
      * @return void
      */
     private function writehtmltablerowstart($row) {
-        $this->buffer->output(html_writer::start_tag('tr',
+        $this->buffer->output(\html_writer::start_tag('tr',
                                 array('class' => 'r' . $row))
                             );
     }
@@ -153,7 +155,7 @@ class tool_uploadexternalcontentresults_tracker {
      * @return void
      */
     private function writehtmltablerowend() {
-        $this->buffer->output(html_writer::end_tag('tr'));
+        $this->buffer->output(\html_writer::end_tag('tr'));
     }
 
     /**
@@ -162,7 +164,7 @@ class tool_uploadexternalcontentresults_tracker {
      * @return void
      */
     private function writehtmlliststart() {
-        $this->buffer->output(html_writer::start_tag('ul'));
+        $this->buffer->output(\html_writer::start_tag('ul'));
     }
 
     /**
@@ -172,7 +174,7 @@ class tool_uploadexternalcontentresults_tracker {
      * @return void
      */
     private function writehtmllistitem($message) {
-        $this->buffer->output(html_writer::tag('li', $message));
+        $this->buffer->output(\html_writer::tag('li', $message));
     }
 
     /**
@@ -181,7 +183,7 @@ class tool_uploadexternalcontentresults_tracker {
      * @return void
      */
     private function writehtmllistend() {
-        $this->buffer->output(html_writer::end_tag('ul'));
+        $this->buffer->output(\html_writer::end_tag('ul'));
     }
 
     /**
@@ -191,7 +193,7 @@ class tool_uploadexternalcontentresults_tracker {
      * @return void
      */
     private function writehtmltablestart($summary = null) {
-        $this->buffer->output(html_writer::start_tag('table',
+        $this->buffer->output(\html_writer::start_tag('table',
         array('class' => 'generaltable boxaligncenter flexible-wrap',
         'summary' => $summary)));
     }
@@ -202,7 +204,7 @@ class tool_uploadexternalcontentresults_tracker {
      * @return void
      */
     private function writehtmltableend() {
-        $this->buffer->output(html_writer::end_tag('table'));
+        $this->buffer->output(\html_writer::end_tag('table'));
     }
 
     /**
@@ -241,7 +243,7 @@ class tool_uploadexternalcontentresults_tracker {
             $this->writehtmltablecell($message[2], $ci++);
             $this->writehtmltablecell($message[3], $ci++);
             $this->writehtmltablecell($message[4], $ci++);
-            $this->writehtmltablecell(implode(html_writer::empty_tag('br'), $status), $ci++);
+            $this->writehtmltablecell(implode(\html_writer::empty_tag('br'), $status), $ci++);
             $this->writehtmltablerowend();
         }
     }

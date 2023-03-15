@@ -18,9 +18,9 @@
  * Importer tests
  *
  * @package    tool_uploadexternalcontentresults
- * @copyright  2019-2022 LushOnline
+ * @copyright  2019-2023 LushOnline
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @covers \tool_uploadexternalcontentresults_importer
+ * @covers \tool_uploadexternalcontentresults\importer
  */
 namespace tool_uploadexternalcontentresults;
 
@@ -28,7 +28,7 @@ namespace tool_uploadexternalcontentresults;
  * Importer tests
  *
  * @package    tool_uploadexternalcontentresults
- * @copyright  2019-2022 LushOnline
+ * @copyright  2019-2023 LushOnline
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  */
@@ -148,17 +148,17 @@ class importer_test extends \advanced_testcase {
      * Confirms that a single course and single activity can be created
      *
      * @return void
-     * @covers \tool_uploadexternalcontentresults_importer
+     * @covers \tool_uploadexternalcontentresults\importer
      */
     public function test_create() {
         $this->setAdminUser();
         $source = __DIR__.'/fixtures/onecourseresult.csv';
         $content = file_get_contents($source);
 
-        $importer = new \tool_uploadexternalcontentresults_importer($content, null, null);
+        $importer = new \tool_uploadexternalcontentresults\importer($content, null, null);
         $importid = $importer->get_importid();
 
-        $importer = new \tool_uploadexternalcontentresults_importer(null, null, null, $importid, null);
+        $importer = new \tool_uploadexternalcontentresults\importer(null, null, null, $importid, null);
         $importer->execute();
 
         // Check completion status.
@@ -174,19 +174,19 @@ class importer_test extends \advanced_testcase {
      * Confirms an error text is returned if an none existent user exists
      *
      * @return void
-     * @covers \tool_uploadexternalcontentresults_importer
+     * @covers \tool_uploadexternalcontentresults\importer
      */
     public function test_invalid_user() {
         $this->setAdminUser();
         $source = __DIR__.'/fixtures/onecourseresult_nouser.csv';
         $content = file_get_contents($source);
 
-        $importer = new \tool_uploadexternalcontentresults_importer($content, null, null);
+        $importer = new \tool_uploadexternalcontentresults\importer($content, null, null);
         $importid = $importer->get_importid();
 
-        $importer = new \tool_uploadexternalcontentresults_importer(null, null, null, $importid, null);
-        $results = $importer->execute(new \tool_uploadexternalcontentresults_tracker(
-                                        \tool_uploadexternalcontentresults_tracker::OUTPUT_PLAIN, false));
+        $importer = new \tool_uploadexternalcontentresults\importer(null, null, null, $importid, null);
+        $results = $importer->execute(new \tool_uploadexternalcontentresults\tracker(
+                                        \tool_uploadexternalcontentresults\tracker::OUTPUT_PLAIN, false));
 
         $this->assertMatchesRegularExpression("/User with username student999 does not exist/", $results);
     }
@@ -196,19 +196,19 @@ class importer_test extends \advanced_testcase {
      * Confirms an error text is returned if an none existent course exists
      *
      * @return void
-     * @covers \tool_uploadexternalcontentresults_importer
+     * @covers \tool_uploadexternalcontentresults\importer
      */
     public function test_invalid_course() {
         $this->setAdminUser();
         $source = __DIR__.'/fixtures/onecourseresult_nocourse.csv';
         $content = file_get_contents($source);
 
-        $importer = new \tool_uploadexternalcontentresults_importer($content, null, null);
+        $importer = new \tool_uploadexternalcontentresults\importer($content, null, null);
         $importid = $importer->get_importid();
 
-        $importer = new \tool_uploadexternalcontentresults_importer(null, null, null, $importid, null);
-        $results = $importer->execute(new \tool_uploadexternalcontentresults_tracker(
-                                        \tool_uploadexternalcontentresults_tracker::OUTPUT_PLAIN, false));
+        $importer = new \tool_uploadexternalcontentresults\importer(null, null, null, $importid, null);
+        $results = $importer->execute(new \tool_uploadexternalcontentresults\tracker(
+                                        \tool_uploadexternalcontentresults\tracker::OUTPUT_PLAIN, false));
 
         $this->assertMatchesRegularExpression(
             "/External content with idnumber B1b49aa30-e719-11e6-9835-f723b46a2688 does not exist/",
@@ -219,14 +219,14 @@ class importer_test extends \advanced_testcase {
      * Confirms an error text is returned if empty CSV file
      *
      * @return void
-     * @covers \tool_uploadexternalcontentresults_importer
+     * @covers \tool_uploadexternalcontentresults\importer
      */
     public function test_empty_csv() {
         $this->setAdminUser();
         $source = __DIR__.'/fixtures/empty.csv';
         $content = file_get_contents($source);
 
-        $importer = new \tool_uploadexternalcontentresults_importer($content, null, null);
+        $importer = new \tool_uploadexternalcontentresults\importer($content, null, null);
         $this->assertTrue($importer->haserrors(), 'Error Messages: '.implode(PHP_EOL, $importer->geterrors()));
     }
 
@@ -234,14 +234,14 @@ class importer_test extends \advanced_testcase {
      * Confirms an error text is returned if not enough columns in CSV file
      *
      * @return void
-     * @covers \tool_uploadexternalcontentresults_importer
+     * @covers \tool_uploadexternalcontentresults\importer
      */
     public function test_not_enough_columns() {
         $this->setAdminUser();
         $source = __DIR__.'/fixtures/notenoughcolumns.csv';
         $content = file_get_contents($source);
 
-        $importer = new \tool_uploadexternalcontentresults_importer($content, null, null);
+        $importer = new \tool_uploadexternalcontentresults\importer($content, null, null);
         $this->assertTrue($importer->haserrors(), 'Error Messages: '.implode(PHP_EOL, $importer->geterrors()));
     }
 }
